@@ -20,10 +20,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
   const steps = [
     {
-      title: 'Welcome to Aura',
+      title: 'Welcome to Aperture',
       subtitle: 'Your Visual Environment Companion',
       description:
-        'Aura is designed for action rather than generic image descriptions. Instead of saying "I see a room", Aura tells you where your water bottle is, in which direction, and how many feet away.',
+        'Aperture is designed for action rather than generic image descriptions. Instead of saying "I see a room", Aperture tells you where your water bottle is, in which direction, and how many feet away.',
       icon: Compass,
       color: 'text-yellow-400 bg-yellow-400/20 border-yellow-400',
     },
@@ -31,7 +31,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
       title: '1. FIND IT',
       subtitle: 'Directional Clock-Face Navigation',
       description:
-        'Ask to find an empty chair, door, elevator, or water bottle. Aura guides you with concise directions: "Chair at 2 o’clock, approximately 7 feet away. Move slightly left."',
+        'Ask to find an empty chair, door, elevator, or water bottle. Aperture guides you with concise directions: "Chair at 2 o’clock, approximately 7 feet away. Move slightly left."',
       icon: Compass,
       color: 'text-yellow-400 bg-yellow-400/20 border-yellow-400',
     },
@@ -39,7 +39,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
       title: '2. REMEMBER IT',
       subtitle: 'Personal Visual Memory System',
       description:
-        'Point your camera at personal items and say "Remember this as my medication". Later, ask "Where are my AirPods?" and Aura recalls their location and helps you locate them.',
+        'Point your camera at personal items and say "Remember this as my medication". Later, ask "Where are my AirPods?" and Aperture recalls their location and helps you locate them.',
       icon: BookmarkCheck,
       color: 'text-sky-400 bg-sky-400/20 border-sky-400',
     },
@@ -47,13 +47,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
       title: '3. WHAT CHANGED?',
       subtitle: 'Room Differential & Hazard Detection',
       description:
-        'Save a baseline of your bedroom, kitchen, or classroom. Later, Aura spots moved chairs, backpacks on the walkway, or trip hazards without redescribing the entire room.',
+        'Save a baseline of your bedroom, kitchen, or classroom. Later, Aperture spots moved chairs, backpacks on the walkway, or trip hazards without redescribing the entire room.',
       icon: History,
       color: 'text-emerald-400 bg-emerald-400/20 border-emerald-400',
     },
     {
       title: 'Preferred Feedback',
-      subtitle: 'How should Aura guide you?',
+      subtitle: 'How should Aperture guide you?',
       description:
         'Choose how you want to receive directions and alerts. You can change this anytime in Settings.',
       icon: Volume2,
@@ -71,7 +71,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
       speech.speak(steps[step + 1].title + '. ' + steps[step + 1].description, 'immediate', true);
     } else {
       onComplete(selectedFeedback);
-      speech.speak('Setup complete. Welcome to Aura home screen.', 'immediate', true);
+      speech.speak('Setup complete. Welcome to Aperture home screen.', 'immediate', true);
     }
   };
 
@@ -96,9 +96,17 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Step Content */}
         <div className="space-y-4 text-center">
-          <div className={`mx-auto flex h-20 w-20 items-center justify-center rounded-3xl border-2 ${currentStep.color}`}>
-            <Icon className="h-10 w-10" />
-          </div>
+          {step === 0 ? (
+            <img
+              src="/assets/aistudio/image_eff76819_4ddf1407.jpg"
+              alt="Aperture Emblem"
+              className="mx-auto h-20 w-20 rounded-full border-2 border-yellow-400 object-cover shadow-2xl"
+            />
+          ) : (
+            <div className={`mx-auto flex h-20 w-20 items-center justify-center rounded-3xl border-2 ${currentStep.color}`}>
+              <Icon className="h-10 w-10" />
+            </div>
+          )}
 
           <div className="space-y-1">
             <h2 id="onboarding-step-title" className="text-2xl font-black text-white">
@@ -145,7 +153,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
           onClick={nextStep}
           className="w-full min-h-[60px] flex items-center justify-center gap-2 rounded-2xl bg-yellow-400 font-black text-zinc-950 text-lg hover:bg-yellow-300 shadow-xl active:scale-98 transition-all"
         >
-          <span>{step === steps.length - 1 ? 'Start Using Aura' : 'Next'}</span>
+          <span>{step === steps.length - 1 ? 'Start Using Aperture' : 'Next'}</span>
           <ArrowRight className="h-5 w-5" />
         </button>
       </div>

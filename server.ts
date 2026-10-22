@@ -71,14 +71,187 @@ async function runGenAIWithFallback<T>(
       if (isRateLimit) {
         // Quick 10s throttle backoff to try next model immediately
         markModelThrottled(model, 10 * 1000);
-        console.log(`[Aura Engine] Model ${model} rate-limited, switching to next model.`);
+        console.log(`[Aperture Engine] Model ${model} rate-limited, switching to next model.`);
       } else {
-        console.log(`[Aura Engine] Model ${model} error, switching to next model:`, errStr);
+        console.log(`[Aperture Engine] Model ${model} error, switching to next model:`, errStr);
       }
     }
   }
 
   return { success: false };
+}
+
+/**
+ * Resilient JSON parser for LLM outputs.
+ * Handles markdown fences, unescaped control characters/newlines inside strings,
+ * truncated strings and unclosed quotes, and restores valid structure.
+ */
+function safeParseJSON<T = any>(rawText: string | null | undefined, fallback?: T): T {
+  if (!rawText || typeof rawText !== 'string' || !rawText.trim()) {
+    if (fallback !== undefined) return fallback;
+    return {} as T;
+  }
+
+  let text = rawText.trim();
+
+  // 1. Remove markdown code blocks if present
+  if (text.startsWith('```')) {
+    text = text.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
+  } else {
+    const codeMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+    if (codeMatch) {
+      text = codeMatch[1].trim();
+    }
+  }
+
+  // 2. Direct fast-path parsing
+  try {
+    return JSON.parse(text);
+  } catch (_) {
+    // Proceed to repair
+  }
+
+  // 3. Extract outermost { ... } or [ ... ]
+  const firstBrace = text.indexOf('{');
+  const firstBracket = text.indexOf('[');
+  let startIdx = -1;
+  let endIdx = -1;
+
+  if (firstBrace !== -1 && (firstBracket === -1 || firstBrace < firstBracket)) {
+    startIdx = firstBrace;
+    endIdx = text.lastIndexOf('}');
+  } else if (firstBracket !== -1) {
+    startIdx = firstBracket;
+    endIdx = text.lastIndexOf(']');
+  }
+
+  if (startIdx !== -1) {
+    if (endIdx > startIdx) {
+      const candidate = text.slice(startIdx, endIdx + 1);
+      try {
+        return JSON.parse(candidate);
+      } catch (_) {}
+    }
+    text = text.slice(startIdx);
+  }
+
+  // 4. Sanitize unescaped control characters inside string literals (e.g. unescaped newlines/tabs)
+  const sanitizeControlChars = (str: string): string => {
+    let result = '';
+    let inStr = false;
+    let escaped = false;
+    for (let i = 0; i < str.length; i++) {
+      const c = str[i];
+      if (escaped) {
+        result += c;
+        escaped = false;
+        continue;
+      }
+      if (c === '\\') {
+        result += c;
+        escaped = true;
+        continue;
+      }
+      if (c === '"') {
+        inStr = !inStr;
+        result += c;
+        continue;
+      }
+      if (inStr) {
+        if (c === '\n') {
+          result += '\\n';
+        } else if (c === '\r') {
+          result += '\\r';
+        } else if (c === '\t') {
+          result += '\\t';
+        } else {
+          result += c;
+        }
+      } else {
+        result += c;
+      }
+    }
+    return result;
+  };
+
+  try {
+    const cleaned = sanitizeControlChars(text);
+    return JSON.parse(cleaned);
+  } catch (_) {}
+
+  // 5. Truncation and unclosed quote repair
+  try {
+    let repaired = sanitizeControlChars(text);
+
+    // Count unescaped double quotes
+    let quoteCount = 0;
+    let escaped = false;
+    for (let i = 0; i < repaired.length; i++) {
+      const c = repaired[i];
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+      if (c === '\\') {
+        escaped = true;
+        continue;
+      }
+      if (c === '"') {
+        quoteCount++;
+      }
+    }
+
+    // If odd number of unescaped quotes, close the open quote
+    if (quoteCount % 2 !== 0) {
+      repaired += '"';
+    }
+
+    // Balance open braces and brackets
+    const stack: string[] = [];
+    let inStr = false;
+    escaped = false;
+    for (let i = 0; i < repaired.length; i++) {
+      const c = repaired[i];
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+      if (c === '\\') {
+        escaped = true;
+        continue;
+      }
+      if (c === '"') {
+        inStr = !inStr;
+        continue;
+      }
+      if (!inStr) {
+        if (c === '{') stack.push('}');
+        else if (c === '[') stack.push(']');
+        else if (c === '}' || c === ']') {
+          if (stack.length > 0 && stack[stack.length - 1] === c) {
+            stack.pop();
+          }
+        }
+      }
+    }
+
+    // Strip trailing comma before closing tokens
+    repaired = repaired.replace(/,\s*$/, '');
+
+    // Append closing characters in reverse order
+    while (stack.length > 0) {
+      repaired += stack.pop();
+    }
+
+    return JSON.parse(repaired);
+  } catch (repairErr) {
+    console.warn('[Aperture Engine] JSON auto-repair could not parse string:', repairErr);
+  }
+
+  if (fallback !== undefined) {
+    return fallback;
+  }
+  return {} as T;
 }
 
 // Health check
@@ -343,7 +516,7 @@ app.post('/api/gemini/find-object', async (req, res) => {
     });
   }
 
-  const promptText = `You are Aura's real-time multimodal visual locator for a blind or visually impaired user.
+  const promptText = `You are Aperture's real-time multimodal visual locator for a blind or visually impaired user.
 The user is pointing their camera searching for: "${target}".
 
 OBJECT RECOGNITION INSTRUCTIONS:
@@ -410,7 +583,7 @@ Output valid JSON matching the schema.`;
         },
         config: {
           temperature: 0.0,
-          maxOutputTokens: 600,
+          maxOutputTokens: 1200,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -460,7 +633,17 @@ Output valid JSON matching the schema.`;
         },
       });
 
-      return JSON.parse(response.text || '{}');
+      return safeParseJSON(response.text, {
+        targetDetected: false,
+        targetName: target,
+        direction: '',
+        distance: '',
+        actionInstruction: `Searching for ${target}. Pan camera slowly.`,
+        confidence: 0,
+        isCentered: false,
+        isImmediateObstacle: false,
+        obstacleWarning: null,
+      });
     }
   );
 
@@ -528,6 +711,7 @@ Task:
           ],
         },
         config: {
+          maxOutputTokens: 1024,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -554,7 +738,7 @@ Task:
         },
       });
 
-      return JSON.parse(response.text || '{}');
+      return safeParseJSON(response.text, generateSmartAnalyzeFallback(userPrompt));
     }
   );
 
@@ -597,7 +781,7 @@ app.post('/api/gemini/inspect-scene', async (req, res) => {
     });
   }
 
-  let promptText = `You are Aura's real-time multimodal vision assistant for a blind or visually impaired person holding up their smartphone camera.
+  let promptText = `You are Aperture's real-time multimodal vision assistant for a blind or visually impaired person holding up their smartphone camera.
 Inspect this actual camera view right now.
 Mode: ${mode}
 User question / prompt: "${question || 'What am I looking at?'}"
@@ -633,7 +817,7 @@ Output valid JSON only.`;
         contents: { parts },
         config: {
           temperature: 0.0,
-          maxOutputTokens: 250,
+          maxOutputTokens: 1200,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -657,7 +841,16 @@ Output valid JSON only.`;
         },
       });
 
-      const parsed = JSON.parse(response.text || '{}');
+      const parsed = safeParseJSON<any>(response.text, {
+        sceneSummary: 'Unable to analyze current camera frame.',
+        primaryObject: 'Unknown',
+        textDetected: '',
+        hazards: [],
+        changesDetected: [],
+        spokenGuidance: 'Could not inspect the scene. Please tap to try again.',
+        confidence: 0,
+        mode,
+      });
       parsed.mode = mode;
       return parsed;
     }
@@ -709,7 +902,7 @@ app.post('/api/gemini/read-text', async (req, res) => {
     });
   }
 
-  const promptText = `You are Aura's real-time multimodal OCR and packaging reader for a blind or visually impaired user.
+  const promptText = `You are Aperture's real-time multimodal OCR and packaging reader for a blind or visually impaired user.
 Analyze this exact camera frame and transcribe any visible printed or handwritten text.
 
 CRITICAL ANTI-HALLUCINATION RULES:
@@ -746,7 +939,7 @@ Output JSON only. DO NOT HALLUCINATE.`;
         contents: { parts },
         config: {
           temperature: 0.0,
-          maxOutputTokens: 350,
+          maxOutputTokens: 2048,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -767,7 +960,15 @@ Output JSON only. DO NOT HALLUCINATE.`;
         },
       });
 
-      return JSON.parse(response.text || '{}');
+      return safeParseJSON(response.text, {
+        overview: 'Could not read text. Please tap to try again.',
+        fullText: '',
+        headline: '',
+        category: 'other',
+        hasText: false,
+        spokenText: 'Could not read text. Please tap to try again.',
+        confidence: 0,
+      });
     }
   );
 
@@ -810,7 +1011,7 @@ app.post('/api/gemini/what-changed', async (req, res) => {
     });
   }
 
-  const promptText = `You are Aura's environment differential auditor for blind users.
+  const promptText = `You are Aperture's environment differential auditor for blind users.
 You are comparing two images of the same space ("${environmentName || 'Room'}"):
 - Image 1 is the BASELINE established when the room was known and clear.
 - Image 2 is the CURRENT live scan.
@@ -842,6 +1043,7 @@ Structure output:
           ],
         },
         config: {
+          maxOutputTokens: 1500,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -876,7 +1078,7 @@ Structure output:
         },
       });
 
-      return JSON.parse(response.text || '{}');
+      return safeParseJSON(response.text, generateSmartWhatChangedFallback(environmentName));
     }
   );
 
@@ -939,7 +1141,7 @@ app.post('/api/gemini/intent', async (req, res) => {
   const itemsSummary = savedItems.map((i: any) => `${i.name} (id: ${i.id}, room: ${i.room})`).join(', ');
   const envsSummary = savedEnvironments.map((e: any) => `${e.name} (id: ${e.id})`).join(', ');
 
-  const promptText = `You are the intent parsing engine for Aura, an accessibility voice companion.
+  const promptText = `You are the intent parsing engine for Aperture, an accessibility voice companion.
 User said: "${query}".
 
 Known saved items: [${itemsSummary || 'None'}]
@@ -962,7 +1164,7 @@ Classify into one of these actions:
 
 5. "HELP_MODES": User asks for instructions or future capabilities (e.g. "What can you do?", "How does this work?", "Show appliance mode").
 
-Provide a direct spoken feedback string explaining what Aura will do.`;
+Provide a direct spoken feedback string explaining what Aperture will do.`;
 
   const aiResult = await runGenAIWithFallback<any>(
     ['gemini-3.1-flash-lite', 'gemini-flash-latest', 'gemini-3.8-flash'],
@@ -971,6 +1173,7 @@ Provide a direct spoken feedback string explaining what Aura will do.`;
         model,
         contents: promptText,
         config: {
+          maxOutputTokens: 600,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -990,7 +1193,7 @@ Provide a direct spoken feedback string explaining what Aura will do.`;
         },
       });
 
-      return JSON.parse(response.text || '{}');
+      return safeParseJSON(response.text, getHeuristicIntent());
     }
   );
 
@@ -1028,7 +1231,7 @@ app.post('/api/gemini/voice-audio', async (req, res) => {
   const itemsSummary = savedItems.map((i: any) => `${i.name} (room: ${i.room})`).join(', ');
   const envsSummary = savedEnvironments.map((e: any) => e.name).join(', ');
 
-  const promptText = `You are Aura's voice recognition assistant for a blind or low-vision user.
+  const promptText = `You are Aperture's voice recognition assistant for a blind or low-vision user.
 Listen carefully to this user audio recording.
 
 CRITICAL ANTI-HALLUCINATION RULES:
@@ -1058,6 +1261,7 @@ CRITICAL ANTI-HALLUCINATION RULES:
         },
         config: {
           temperature: 0.0,
+          maxOutputTokens: 600,
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
@@ -1078,7 +1282,13 @@ CRITICAL ANTI-HALLUCINATION RULES:
         },
       });
 
-      return JSON.parse(response.text || '{}');
+      return safeParseJSON(response.text, {
+        transcript: '',
+        action: 'FIND',
+        target: '',
+        spokenFeedback: 'Could not hear item name. Please speak clearly.',
+        confidence: 0,
+      });
     }
   );
 
@@ -1126,7 +1336,7 @@ app.post('/api/gemini/chat', async (req, res) => {
   // Define role-specific system instructions
   let systemPrompt = '';
   if (rolePreset === 'identifier') {
-    systemPrompt = `You are Aura's Visual Object & Tactile Identifier, an AI vision specialist helping a blind or low-vision user.
+    systemPrompt = `You are Aperture's Visual Object & Tactile Identifier, an AI vision specialist helping a blind or low-vision user.
 Your primary role is to inspect objects from camera photos or descriptions in detail.
 Focus on:
 1. Exact identification of the object and packaging labels.
@@ -1148,7 +1358,7 @@ Whenever you identify an object or the user asks to inspect/remember an item fro
 \`\`\`
 Known saved items for memory reference: [${itemsSummary || 'None'}]`;
   } else if (rolePreset === 'safety') {
-    systemPrompt = `You are Aura's Room Safety & Hazard Auditor for blind and low-vision users.
+    systemPrompt = `You are Aperture's Room Safety & Hazard Auditor for blind and low-vision users.
 Your primary role is to inspect paths, floors, and walkways for hazards and changes.
 Focus on:
 1. Trip hazards: shoes, cables, boxes, dropped objects.
@@ -1168,7 +1378,7 @@ If you detect an obstacle or the user asks about room safety, append a JSON tool
 \`\`\`
 Known saved environments: [${envsSummary || 'None'}]`;
   } else if (rolePreset === 'memory') {
-    systemPrompt = `You are Aura's Spatial Memory & Item Retrieval Assistant for blind and low-vision users.
+    systemPrompt = `You are Aperture's Spatial Memory & Item Retrieval Assistant for blind and low-vision users.
 Your primary role is to help the user recall where they left their personal belongings.
 Search the user's saved items memory:
 [${itemsSummary || 'No saved items yet'}]
@@ -1187,7 +1397,7 @@ If the user asks where an item is:
 \`\`\``;
   } else {
     // Default: 'copilot'
-    systemPrompt = `You are Aura's Primary AI Accessibility Co-Pilot, an intelligent personal navigator and vision companion for blind and low-vision individuals.
+    systemPrompt = `You are Aperture's Primary AI Accessibility Co-Pilot, an intelligent personal navigator and vision companion for blind and low-vision individuals.
 Persona & tone:
 - Calm, concise, empowering, and spatial.
 - Always use clock-face positions: 12 o'clock is straight ahead, 1 o'clock slight right, 11 o'clock slight left, 3 o'clock 90° right, 9 o'clock 90° left.
@@ -1286,7 +1496,7 @@ User's saved environments: [${envsSummary || 'None'}]`;
     const toolMatch = rawText.match(/```json:tool_action\s*([\s\S]*?)\s*```/);
     if (toolMatch) {
       try {
-        toolAction = JSON.parse(toolMatch[1]);
+        toolAction = safeParseJSON(toolMatch[1]);
         cleanText = rawText.replace(/```json:tool_action\s*[\s\S]*?\s*```/, '').trim();
       } catch (e) {
         // Ignore tool parse failure, keep clean text
@@ -1457,7 +1667,7 @@ async function startServer() {
   }
 
   app.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`Aura server running at http://0.0.0.0:${PORT} (env: ${process.env.NODE_ENV || 'development'})`);
+    console.log(`Aperture server running at http://0.0.0.0:${PORT} (env: ${process.env.NODE_ENV || 'development'})`);
   });
 }
 

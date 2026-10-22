@@ -42,7 +42,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const testVoiceRate = () => {
     haptic.tapFeedback();
-    speech.speak('This is how Aura announces navigation guidance at this speed.', 'immediate', true);
+    speech.speak('This is how Aperture announces navigation guidance at this speed.', 'immediate', true);
   };
 
   const handlePurgeAll = () => {
@@ -124,7 +124,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
           {typeof navigator !== 'undefined' && !('vibrate' in navigator) && (
             <p className="text-[11px] text-zinc-400 leading-snug">
-              Note: Apple iOS (iPhone/iPad Safari) and desktop computers restrict web browsers from accessing the physical vibration motor. Aura provides high-contrast audio tones as an automatic tactile substitute.
+              Note: Apple iOS (iPhone/iPad Safari) and desktop computers restrict web browsers from accessing the physical vibration motor. Aperture provides high-contrast audio tones as an automatic tactile substitute.
             </p>
           )}
         </div>

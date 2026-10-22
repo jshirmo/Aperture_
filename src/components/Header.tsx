@@ -63,15 +63,17 @@ export const Header: React.FC<HeaderProps> = ({
                 speech.speak('Returned to home screen', 'immediate', true);
               }
             }}
-            className="flex items-center gap-2 rounded-xl p-1.5 font-bold tracking-tight text-yellow-400 hover:text-yellow-300 focus-visible:ring-2 focus-visible:ring-yellow-400"
-            aria-label="Aura Home, return to main screen"
+            className="flex items-center gap-3 rounded-xl p-1.5 font-bold tracking-tight text-yellow-400 hover:text-yellow-300 focus-visible:ring-2 focus-visible:ring-yellow-400"
+            aria-label="Aperture Home, return to main screen"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-400 text-zinc-950 font-black text-xl">
-              A
-            </div>
+            <img
+              src="/assets/aistudio/image_eff76819_4ddf1407.jpg"
+              alt="Aperture Icon"
+              className="h-10 w-10 rounded-full object-cover border-2 border-yellow-400 shadow-md shrink-0"
+            />
             <div className="flex flex-col text-left">
               <span className="text-xl font-extrabold tracking-wider leading-none text-white">
-                AURA
+                APERTURE
               </span>
               <span className="text-[11px] font-medium tracking-wide text-zinc-400">
                 Visual Companion

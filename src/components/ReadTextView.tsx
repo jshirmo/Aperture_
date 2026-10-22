@@ -457,7 +457,7 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
             Point camera at package and tap "Read Text Now"
           </p>
           <p className="text-sm font-semibold text-zinc-400">
-            Aura will first speak an overview summary aloud, then give you a button to hear the exact text word-for-word.
+            Aperture will first speak an overview summary aloud, then give you a button to hear the exact text word-for-word.
           </p>
         </div>
       )}

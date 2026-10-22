@@ -37,7 +37,6 @@ export const FindItView: React.FC<FindItViewProps> = ({
 
   // Camera state
   const [isScanning, setIsScanning] = useState(false);
-  const [isContinuous, setIsContinuous] = useState(false); // Default to on-demand prompted scans
   const lastApiCallTimeRef = useRef<number>(0);
   const scanStepRef = useRef<number>(0);
 
@@ -58,7 +57,6 @@ export const FindItView: React.FC<FindItViewProps> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const continuousTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Device orientation tracking when compass toggle is on
   useEffect(() => {
@@ -118,9 +116,6 @@ export const FindItView: React.FC<FindItViewProps> = ({
       active = false;
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((t) => t.stop());
-      }
-      if (continuousTimerRef.current) {
-        clearInterval(continuousTimerRef.current);
       }
     };
   }, []);
@@ -233,27 +228,7 @@ export const FindItView: React.FC<FindItViewProps> = ({
     }
   };
 
-  // Only run continuous loop if the user explicitly enabled the Live Stream toggle
-  useEffect(() => {
-    if (!isContinuous) {
-      if (continuousTimerRef.current) {
-        clearInterval(continuousTimerRef.current);
-        continuousTimerRef.current = null;
-      }
-      return;
-    }
 
-    continuousTimerRef.current = setInterval(() => {
-      performScan(false);
-    }, 2000);
-
-    return () => {
-      if (continuousTimerRef.current) {
-        clearInterval(continuousTimerRef.current);
-        continuousTimerRef.current = null;
-      }
-    };
-  }, [target, isContinuous]);
 
   // Keep target in sync if initialTarget changes
   useEffect(() => {
@@ -1102,28 +1077,7 @@ export const FindItView: React.FC<FindItViewProps> = ({
         </button>
       </div>
 
-      {/* Auto-scan live stream toggle */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-3.5 flex items-center justify-between text-xs">
-        <label className="flex items-center gap-2 cursor-pointer font-semibold text-zinc-300">
-          <input
-            type="checkbox"
-            checked={isContinuous}
-            onChange={(e) => {
-              haptic.tapFeedback();
-              setIsContinuous(e.target.checked);
-              speech.speak(
-                e.target.checked
-                  ? 'Live continuous vision enabled. Point camera forward.'
-                  : 'Live continuous vision paused',
-                'immediate',
-                true
-              );
-            }}
-            className="h-4 w-4 rounded accent-yellow-400"
-          />
-          <span className="font-extrabold text-white">Live Hands-Free Stream (Continuous observation without capturing)</span>
-        </label>
-      </div>
+
     </div>
   );
 };

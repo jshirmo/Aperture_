@@ -26,22 +26,29 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
       {/* High-Contrast Accessible App Header (No cluttered top voice bar) */}
       <section
         role="region"
-        aria-label="Aura Assistive Vision"
+        aria-label="Aperture Assistive Vision"
         className="rounded-3xl border-3 border-yellow-400 bg-black p-5 shadow-2xl relative overflow-hidden"
       >
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-yellow-400 animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-widest text-yellow-400">
-              Aura Accessibility Hub
-            </span>
+        <div className="flex items-center justify-between gap-4">
+          <div className="space-y-1.5 flex-1">
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full bg-yellow-400 animate-pulse" />
+              <span className="text-xs font-black uppercase tracking-widest text-yellow-400">
+                Aperture Accessibility Hub
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              AI Vision Tools
+            </h1>
+            <p className="text-sm font-semibold text-zinc-200">
+              High-contrast visual tools built for blind and low-vision independence. Choose a tool below or navigate hands-free.
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            AI Vision Tools
-          </h1>
-          <p className="text-sm font-semibold text-zinc-200">
-            High-contrast visual tools built for blind and low-vision independence. Choose a tool below or navigate hands-free.
-          </p>
+          <img
+            src="/assets/aistudio/image_eff76819_4ddf1407.jpg"
+            alt="Aperture Emblem"
+            className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 border-yellow-400 shadow-xl shrink-0"
+          />
         </div>
       </section>
 
@@ -139,13 +146,13 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
       <div
         role="note"
         aria-label="Safety notice"
-        className="rounded-2xl border-2 border-amber-400/50 bg-amber-950/30 p-4 text-xs font-semibold text-amber-200 flex items-start gap-3"
+        className="rounded-2xl border-2 border-red-500/60 bg-red-950/40 p-4 text-xs font-semibold text-red-200 flex items-start gap-3 shadow-lg"
       >
-        <AlertTriangle className="h-5 w-5 shrink-0 text-amber-400 mt-0.5" />
+        <AlertTriangle className="h-5 w-5 shrink-0 text-red-400 mt-0.5" />
         <div className="space-y-1">
-          <p className="font-extrabold text-amber-300 text-sm">Mobility Safety Notice</p>
+          <p className="font-extrabold text-red-300 text-sm">Mobility Safety Notice</p>
           <p className="leading-relaxed">
-            Aura assists with visual and audio awareness, but does NOT replace a white cane or guide dog. Always use your primary mobility aid for steps, drop-offs, and street crossings.
+            Aperture assists with visual and audio awareness, but does NOT replace a white cane or guide dog. Always use your primary mobility aid for steps, drop-offs, and street crossings.
           </p>
         </div>
       </div>

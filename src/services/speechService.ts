@@ -329,10 +329,10 @@ class SpeechService {
   announceToScreenReader(message: string, politeness: 'polite' | 'assertive' = 'polite') {
     if (typeof document === 'undefined') return;
 
-    let announcer = document.getElementById('aura-aria-live-announcer');
+    let announcer = document.getElementById('aperture-aria-live-announcer');
     if (!announcer) {
       announcer = document.createElement('div');
-      announcer.id = 'aura-aria-live-announcer';
+      announcer.id = 'aperture-aria-live-announcer';
       announcer.className = 'sr-only';
       announcer.setAttribute('aria-atomic', 'true');
       document.body.appendChild(announcer);

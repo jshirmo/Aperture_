@@ -44,15 +44,17 @@ export const FutureModesModal: React.FC<FutureModesModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b-2 border-zinc-800 pb-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-yellow-400 text-zinc-950 font-black">
-              <HelpCircle className="h-6 w-6" />
-            </div>
+            <img
+              src="/assets/aistudio/image_eff76819_4ddf1407.jpg"
+              alt="Aperture Emblem"
+              className="h-11 w-11 rounded-full object-cover border-2 border-yellow-400 shadow-md shrink-0"
+            />
             <div>
               <h2 id="app-guide-title" className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Aura App User Guide
+                Aperture App User Guide
               </h2>
               <p className="text-xs text-zinc-300 font-bold">
-                How to use Aura's visual accessibility tools
+                How to use Aperture's visual accessibility tools
               </p>
             </div>
           </div>
@@ -121,7 +123,7 @@ export const FutureModesModal: React.FC<FutureModesModalProps> = ({
               <div className="rounded-2xl bg-zinc-950 p-4 border border-zinc-800 space-y-1.5">
                 <p className="text-xs font-black uppercase tracking-wider text-sky-400">2. Concise Overview Aloud</p>
                 <p className="text-sm text-zinc-300 leading-snug">
-                  Aura speaks a clear 1–2 sentence summary first (e.g. brand name, medication dosage, expiration date, or main instructions) so you get key details without listening to cluttered text.
+                  Aperture speaks a clear 1–2 sentence summary first (e.g. brand name, medication dosage, expiration date, or main instructions) so you get key details without listening to cluttered text.
                 </p>
               </div>
 
@@ -158,7 +160,7 @@ export const FutureModesModal: React.FC<FutureModesModalProps> = ({
               <div className="rounded-2xl bg-zinc-950 p-4 border border-zinc-800 space-y-1.5">
                 <p className="text-xs font-black uppercase tracking-wider text-amber-400">2. Clock-Face Audio Direction</p>
                 <p className="text-sm text-zinc-300 leading-snug">
-                  Tap <strong className="text-white">Scan Now</strong>. Aura speaks your relative clock bearing (e.g. <em className="text-white">"Keys at 2 o’clock, approx 3 feet away"</em>) and shows a high-contrast needle on the dial.
+                  Tap <strong className="text-white">Scan Now</strong>. Aperture speaks your relative clock bearing (e.g. <em className="text-white">"Keys at 2 o’clock, approx 3 feet away"</em>) and shows a high-contrast needle on the dial.
                 </p>
               </div>
 
@@ -245,10 +247,10 @@ export const FutureModesModal: React.FC<FutureModesModalProps> = ({
         )}
 
         {/* Mobility Notice */}
-        <div className="rounded-2xl border border-amber-500/40 bg-amber-950/30 p-3.5 flex items-start gap-2.5 text-xs text-amber-200 font-semibold">
-          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-400 mt-0.5" />
+        <div className="rounded-2xl border-2 border-red-500/60 bg-red-950/40 p-3.5 flex items-start gap-2.5 text-xs text-red-200 font-semibold shadow-lg">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
           <p>
-            Aura assists with visual and audio awareness, but does not replace a white cane or guide dog. Always use your primary mobility aid for steps, drop-offs, and street crossings.
+            Aperture assists with visual and audio awareness, but does not replace a white cane or guide dog. Always use your primary mobility aid for steps, drop-offs, and street crossings.
           </p>
         </div>
 

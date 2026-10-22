@@ -86,7 +86,7 @@ export default function App() {
       </a>
 
       {/* Screen Reader Live Region Announcer Container */}
-      <div id="aura-aria-live-announcer" aria-live="polite" aria-atomic="true" className="sr-only" />
+      <div id="aperture-aria-live-announcer" aria-live="polite" aria-atomic="true" className="sr-only" />
 
       {/* Top Application Header */}
       <Header

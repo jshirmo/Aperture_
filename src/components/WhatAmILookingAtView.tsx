@@ -6,11 +6,7 @@ import {
   RefreshCw,
   AlertTriangle,
   ShieldAlert,
-  Mic,
-  MicOff,
   Sparkles,
-  Play,
-  Pause,
 } from 'lucide-react';
 import { InspectMode, InspectSceneResult, UserSettings } from '../types';
 import { speech } from '../services/speechService';
@@ -29,22 +25,15 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
   onLaunchFind,
 }) => {
   const [activeMode, setActiveMode] = useState<'scene' | 'hazards' | 'text'>('scene');
-  const [isLiveActive, setIsLiveActive] = useState<boolean>(false); // Prompted on-demand inspection by default
   const [isInspecting, setIsInspecting] = useState<boolean>(false);
 
   // Result state
   const [result, setResult] = useState<InspectSceneResult | null>(null);
   const [lastSpokenGuidance, setLastSpokenGuidance] = useState<string>('');
 
-  // Voice question state
-  const [isVoiceListening, setIsVoiceListening] = useState<boolean>(false);
-  const [voiceTranscript, setVoiceTranscript] = useState<string>('');
-  const [customQuestion, setCustomQuestion] = useState<string>('');
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const liveTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastAnalysisTimeRef = useRef<number>(0);
 
   // Initialize camera
@@ -159,7 +148,7 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
         return;
       }
 
-      const question = questionText || customQuestion || (
+      const question = questionText || (
         modeToUse === 'text'
           ? 'Read all visible text, packaging labels, and warnings.'
           : modeToUse === 'hazards'
@@ -196,73 +185,10 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
     }
   };
 
-  // Only run continuous loop if the user explicitly enabled live mode
-  useEffect(() => {
-    if (!isLiveActive) {
-      if (liveTimerRef.current) {
-        clearInterval(liveTimerRef.current);
-        liveTimerRef.current = null;
-      }
-      return;
-    }
-
-    liveTimerRef.current = setInterval(() => {
-      performInspection(activeMode);
-    }, 2500);
-
-    return () => {
-      if (liveTimerRef.current) {
-        clearInterval(liveTimerRef.current);
-        liveTimerRef.current = null;
-      }
-    };
-  }, [isLiveActive, activeMode]);
-
-  // Voice Question input
-  const startVoiceQuestion = () => {
-    if (isVoiceListening) {
-      setIsVoiceListening(false);
-      return;
-    }
-
-    haptic.tapFeedback();
-    setIsVoiceListening(true);
-    setVoiceTranscript('');
-    speech.playChime('start');
-
-    speech.startVoiceInput(
-      (text) => {
-        setIsVoiceListening(false);
-        setCustomQuestion(text);
-        speech.playChime('success');
-
-        const textLower = text.toLowerCase();
-        let targetMode = activeMode;
-        if (textLower.includes('read') || textLower.includes('label') || textLower.includes('text')) {
-          targetMode = 'text';
-          setActiveMode('text');
-        } else if (textLower.includes('hazard') || textLower.includes('safe') || textLower.includes('obstacle') || textLower.includes('trip')) {
-          targetMode = 'hazards';
-          setActiveMode('hazards');
-        }
-
-        performInspection(targetMode, text, true);
-      },
-      () => {
-        setIsVoiceListening(false);
-      },
-      (interim) => {
-        setVoiceTranscript(interim);
-      }
-    );
-  };
-
   // Switch inspection mode with spoken feedback
   const handleModeChange = (mode: 'scene' | 'hazards' | 'text') => {
     haptic.tapFeedback();
     setActiveMode(mode);
-    setCustomQuestion('');
-    setVoiceTranscript('');
 
     const announcement =
       mode === 'scene'
@@ -284,18 +210,6 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
     } else {
       speech.speak('No inspection made yet. Tap Inspect Scene Now to analyze.', 'immediate', true);
     }
-  };
-
-  // Toggle live streaming on/off
-  const toggleLiveStreaming = () => {
-    haptic.tapFeedback();
-    const next = !isLiveActive;
-    setIsLiveActive(next);
-    speech.speak(
-      next ? 'Live continuous inspection resumed.' : 'Live inspection paused.',
-      'immediate',
-      true
-    );
   };
 
   return (
@@ -320,24 +234,10 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
               What Am I Looking At?
             </h1>
             <p className="text-xs text-emerald-300 font-bold tracking-wide">
-              Live AI Scene &amp; Obstacle Inspector
+              AI Scene &amp; Obstacle Inspector
             </p>
           </div>
         </div>
-
-        {/* Live Pause/Play toggle */}
-        <button
-          onClick={toggleLiveStreaming}
-          className={`flex min-h-[48px] px-3.5 items-center gap-2 rounded-2xl border-2 font-black text-xs transition-all ${
-            isLiveActive
-              ? 'bg-emerald-400 text-zinc-950 border-emerald-300'
-              : 'bg-zinc-900 border-zinc-700 text-zinc-300'
-          }`}
-          aria-label={isLiveActive ? 'Live inspection active. Tap to pause.' : 'Live inspection paused. Tap to resume.'}
-        >
-          {isLiveActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          <span>{isLiveActive ? 'Live Active' : 'Paused'}</span>
-        </button>
       </div>
 
       {/* Live Video Camera Viewfinder or Simulation (Tap to inspect on demand) */}
@@ -463,7 +363,7 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
           <div className="flex items-center gap-2">
             <Volume2 className="w-6 h-6 text-emerald-400" />
             <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
-              Live Spoken AI Description
+              Spoken AI Description
             </span>
           </div>
 
@@ -479,8 +379,8 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
         <p className="text-lg sm:text-xl font-extrabold text-white leading-relaxed">
           {result?.spokenGuidance ||
             (isInspecting
-              ? 'Inspecting live scene with AI...'
-              : 'Point your camera in any direction to receive live continuous audio descriptions.')}
+              ? 'Inspecting scene with AI...'
+              : 'Point your camera at what you want to see and tap Inspect Scene Now.')}
         </p>
 
         {/* Hazards alert */}
@@ -499,33 +399,6 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
         )}
       </section>
 
-      {/* Voice Question Button */}
-      <button
-        onClick={startVoiceQuestion}
-        className={`w-full min-h-[64px] p-4 rounded-2xl border-3 flex items-center justify-center gap-3 transition-all ${
-          isVoiceListening
-            ? 'bg-rose-600 border-rose-300 text-white animate-pulse'
-            : 'bg-zinc-900 border-yellow-400 text-yellow-400 hover:bg-zinc-800'
-        }`}
-        aria-label={
-          isVoiceListening
-            ? 'Microphone active. Speak your question now.'
-            : 'Ask a question using your voice about what you see'
-        }
-      >
-        {isVoiceListening ? <MicOff className="w-7 h-7" /> : <Mic className="w-7 h-7" />}
-        <span className="text-base font-black uppercase tracking-wide">
-          {isVoiceListening
-            ? 'Listening... Speak your question'
-            : 'Ask with Voice: "What is this?" or "Is walkway clear?"'}
-        </span>
-      </button>
-
-      {voiceTranscript && (
-        <p className="text-xs text-center text-zinc-300 font-bold italic">
-          "{voiceTranscript}"
-        </p>
-      )}
 
       {/* Bridge to Find It */}
       {result?.primaryObject && onLaunchFind && (
