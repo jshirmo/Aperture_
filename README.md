@@ -52,17 +52,6 @@ Most visual accessibility tools today generate generic, passive narrations:
 
 ---
 
-## 🔮 Future Capabilities Architecture
-
-An interactive in-app guide showcases five architected future modes:
-1. **Appliance Mode**: Interactive microwave/washer touch-panel navigator with finger spatial guidance (*"Finger on Power. Move 2 inches right: Start button."*).
-2. **Food / Plate Mode**: Plate diagram translating meals into clock-face coordinates (*"Chicken at 12 o’clock, vegetables at 3 o’clock, potatoes at 7 o’clock."*).
-3. **Social Awareness**: Speaker direction, crowd count, and hand-raise detection with a strict zero-facial-recognition privacy guarantee.
-4. **Clothing Assistance**: Color palette matching, inside-out detection, and stain checks.
-5. **Reading / Identification**: Signs, room numbers, medication labels, and currency.
-
----
-
 ## ♿ Accessibility & Universal Design
 
 - **Screen Reader Optimized**: Semantic HTML5 landmarks, skip link (`#main-content`), and dedicated live region announcements (`aria-live="polite"` and `aria-live="assertive"`).
