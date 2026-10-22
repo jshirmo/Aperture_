@@ -38,9 +38,9 @@ export const FutureModesModal: React.FC<FutureModesModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="app-guide-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-4 backdrop-blur-sm overflow-y-auto"
     >
-      <div className="w-full max-w-2xl rounded-3xl border-3 border-yellow-400 bg-zinc-950 p-6 text-white shadow-2xl space-y-5 my-8 max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-2xl rounded-3xl border-3 border-yellow-400 bg-zinc-950 p-4 sm:p-6 text-white shadow-2xl space-y-4 sm:space-y-5 my-auto max-h-[92vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between border-b-2 border-zinc-800 pb-4">
           <div className="flex items-center gap-3">

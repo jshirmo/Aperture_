@@ -234,27 +234,27 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-5rem)] max-w-3xl mx-auto px-4 py-3 space-y-4">
+    <div className="flex flex-col min-h-[calc(100vh-6rem)] max-w-3xl mx-auto px-3 sm:px-4 py-3 space-y-3 sm:space-y-4">
       {/* Top Header */}
       <div className="flex items-center justify-between pb-3 border-b-2 border-zinc-800">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             onClick={() => {
               haptic.tapFeedback();
               speech.stop();
               onBack();
             }}
-            className="flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl bg-zinc-900 border-2 border-zinc-700 text-white hover:bg-zinc-800 focus-visible:ring-4 focus-visible:ring-sky-400"
+            className="flex min-h-[46px] min-w-[46px] sm:min-h-[52px] sm:min-w-[52px] items-center justify-center rounded-2xl bg-zinc-900 border-2 border-zinc-700 text-white hover:bg-zinc-800 focus-visible:ring-4 focus-visible:ring-sky-400 shrink-0"
             aria-label="Back to home dashboard"
           >
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
-          <div>
-            <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-              <FileText className="h-7 w-7 text-sky-400" />
-              Read Text &amp; Labels
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-1.5 sm:gap-2 truncate">
+              <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-sky-400 shrink-0" />
+              <span>Read Text &amp; Labels</span>
             </h1>
-            <p className="text-xs text-sky-300 font-bold tracking-wide">
+            <p className="text-[11px] sm:text-xs text-sky-300 font-bold tracking-wide truncate">
               Overview Summary + Exact Text Aloud
             </p>
           </div>
@@ -268,14 +268,14 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
             setSpeechMuted(next);
             speech.speak(next ? 'Speech muted' : 'Speech unmuted', 'immediate');
           }}
-          className={`flex min-h-[50px] min-w-[50px] items-center justify-center rounded-2xl border-2 text-xs font-black transition-all ${
+          className={`flex min-h-[46px] min-w-[46px] sm:min-h-[50px] sm:min-w-[50px] items-center justify-center rounded-2xl border-2 text-xs font-black transition-all shrink-0 ${
             !speechMuted
               ? 'bg-sky-400/20 border-sky-400 text-sky-300'
               : 'bg-zinc-900 border-zinc-700 text-zinc-400'
           }`}
           aria-label={speechMuted ? 'Speech is muted. Tap to enable aloud reading.' : 'Speech is active. Tap to mute aloud reading.'}
         >
-          {!speechMuted ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
+          {!speechMuted ? <Volume2 className="h-5 w-5 sm:h-6 sm:w-6" /> : <VolumeX className="h-5 w-5 sm:h-6 sm:w-6" />}
         </button>
       </div>
 
@@ -302,36 +302,36 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
         />
 
         {/* High-Contrast Aim Guide Targeting Corners */}
-        <div className="absolute inset-0 pointer-events-none p-5 flex flex-col justify-between">
+        <div className="absolute inset-0 pointer-events-none p-4 sm:p-5 flex flex-col justify-between">
           <div className="flex justify-between">
-            <span className="w-10 h-10 border-t-4 border-l-4 border-sky-400 rounded-tl-2xl shadow-md" />
-            <span className="w-10 h-10 border-t-4 border-r-4 border-sky-400 rounded-tr-2xl shadow-md" />
+            <span className="w-8 h-8 sm:w-10 sm:h-10 border-t-4 border-l-4 border-sky-400 rounded-tl-2xl shadow-md" />
+            <span className="w-8 h-8 sm:w-10 sm:h-10 border-t-4 border-r-4 border-sky-400 rounded-tr-2xl shadow-md" />
           </div>
           <div className="flex justify-between">
-            <span className="w-10 h-10 border-b-4 border-l-4 border-sky-400 rounded-bl-2xl shadow-md" />
-            <span className="w-10 h-10 border-b-4 border-r-4 border-sky-400 rounded-br-2xl shadow-md" />
+            <span className="w-8 h-8 sm:w-10 sm:h-10 border-b-4 border-l-4 border-sky-400 rounded-bl-2xl shadow-md" />
+            <span className="w-8 h-8 sm:w-10 sm:h-10 border-b-4 border-r-4 border-sky-400 rounded-br-2xl shadow-md" />
           </div>
         </div>
 
         {/* Overlay Status Badge */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-sky-400 text-xs font-black text-sky-300">
-            <Camera className="h-4 w-4 text-sky-400" />
+        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between pointer-events-none">
+          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-sky-400 text-[11px] sm:text-xs font-black text-sky-300">
+            <Camera className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-sky-400" />
             <span>{isAnalyzing ? 'Analyzing Text with AI...' : 'Camera Active'}</span>
           </div>
 
           {isAnalyzing && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-yellow-400 text-yellow-300 text-xs font-black animate-pulse">
-              <Sparkles className="h-3.5 w-3.5 animate-spin" />
+            <div className="flex items-center gap-1.5 px-3 py-1 sm:px-3 sm:py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-yellow-400 text-yellow-300 text-[11px] sm:text-xs font-black animate-pulse">
+              <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 animate-spin" />
               <span>Transcribing...</span>
             </div>
           )}
         </div>
 
         {/* Central visual cue */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4">
           {!isAnalyzing && !currentResult && (
-            <div className="px-5 py-2.5 rounded-2xl bg-black/80 backdrop-blur-md border-2 border-sky-400 text-white font-extrabold text-sm sm:text-base text-center shadow-2xl">
+            <div className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl bg-black/80 backdrop-blur-md border-2 border-sky-400 text-white font-extrabold text-xs sm:text-base text-center shadow-2xl">
               Tap Anywhere to Read Text
             </div>
           )}
@@ -339,7 +339,7 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
 
         {/* Bottom hint inside viewfinder */}
         <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none">
-          <span className="px-4 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-xs text-zinc-100 font-extrabold border border-zinc-700">
+          <span className="px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md text-[11px] sm:text-xs text-zinc-100 font-extrabold border border-zinc-700">
             Tap screen to scan on-demand
           </span>
         </div>
@@ -349,42 +349,42 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
       <button
         onClick={() => handlePromptRead()}
         disabled={isAnalyzing}
-        className="w-full min-h-[72px] rounded-2xl bg-sky-400 text-zinc-950 font-black text-xl sm:text-2xl flex items-center justify-center gap-3 shadow-xl hover:bg-sky-300 active:scale-95 transition-all focus-visible:ring-4 focus-visible:ring-sky-400 disabled:opacity-50"
+        className="w-full min-h-[62px] sm:min-h-[72px] rounded-2xl bg-sky-400 text-zinc-950 font-black text-lg sm:text-2xl flex items-center justify-center gap-2 sm:gap-3 shadow-xl hover:bg-sky-300 active:scale-95 transition-all focus-visible:ring-4 focus-visible:ring-sky-400 disabled:opacity-50"
         aria-label={currentResult ? 'Scan and read again' : 'Read text now'}
       >
         {isAnalyzing ? (
           <>
-            <Sparkles className="h-7 w-7 animate-spin" />
+            <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 animate-spin" />
             <span>Transcribing with AI...</span>
           </>
         ) : (
           <>
-            <Camera className="h-7 w-7 stroke-[2.8]" />
-            <span>{currentResult ? 'Scan Again / Read Next Item' : 'Read Text Now'}</span>
+            <Camera className="h-6 w-6 sm:h-7 sm:w-7 stroke-[2.8]" />
+            <span>{currentResult ? 'Scan Again / Next Item' : 'Read Text Now'}</span>
           </>
         )}
       </button>
 
       {/* Current Results Section: Overview + Exact Text Button */}
       {currentResult && (
-        <div className="space-y-4 pt-2">
+        <div className="space-y-3 sm:space-y-4 pt-1 sm:pt-2">
           {/* Card 1: Overview Summary (Read Aloud Automatically First) */}
           <section
             role="region"
             aria-labelledby="overview-heading"
-            className="p-5 rounded-3xl bg-zinc-950 border-3 border-sky-400 shadow-2xl space-y-3"
+            className="p-4 sm:p-5 rounded-3xl bg-zinc-950 border-3 border-sky-400 shadow-2xl space-y-3"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="h-3.5 w-3.5 rounded-full bg-sky-400 animate-pulse" />
-                <h2 id="overview-heading" className="text-xs font-black uppercase tracking-widest text-sky-400">
+                <span className="h-3 w-3 sm:h-3.5 sm:w-3.5 rounded-full bg-sky-400 animate-pulse" />
+                <h2 id="overview-heading" className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-sky-400">
                   Overview of What Was Read
                 </h2>
               </div>
 
               <button
                 onClick={handleRepeatOverview}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 border border-sky-400/50 text-xs font-bold text-sky-300 hover:text-white hover:bg-zinc-800"
+                className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-zinc-900 border border-sky-400/50 text-[11px] sm:text-xs font-bold text-sky-300 hover:text-white hover:bg-zinc-800"
                 aria-label="Repeat overview aloud"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
@@ -393,12 +393,12 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
             </div>
 
             {currentResult.headline && (
-              <h3 className="text-2xl font-black text-white tracking-tight leading-snug">
+              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
                 {currentResult.headline}
               </h3>
             )}
 
-            <p className="text-lg sm:text-xl font-bold text-sky-200 leading-relaxed bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800">
+            <p className="text-base sm:text-xl font-bold text-sky-200 leading-relaxed bg-zinc-900/90 p-3.5 sm:p-4 rounded-2xl border border-zinc-800">
               {currentResult.overview || currentResult.spokenText}
             </p>
           </section>
@@ -407,19 +407,19 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
           <section
             role="region"
             aria-labelledby="exact-text-heading"
-            className="p-5 rounded-3xl bg-zinc-950 border-3 border-yellow-400 shadow-2xl space-y-4"
+            className="p-4 sm:p-5 rounded-3xl bg-zinc-950 border-3 border-yellow-400 shadow-2xl space-y-3 sm:space-y-4"
           >
             {/* The Dedicated Button to Read Exact Text Aloud */}
             <button
               onClick={handleReadExactText}
-              className={`w-full min-h-[68px] rounded-2xl p-4 font-black text-xl flex items-center justify-center gap-3 shadow-2xl transition-all active:scale-[0.98] ${
+              className={`w-full min-h-[58px] sm:min-h-[68px] rounded-2xl p-3 sm:p-4 font-black text-base sm:text-xl flex items-center justify-center gap-2 sm:gap-3 shadow-2xl transition-all active:scale-[0.98] ${
                 isPlayingExact
                   ? 'bg-rose-500 text-white animate-pulse'
                   : 'bg-yellow-400 text-zinc-950 hover:bg-yellow-300'
               }`}
               aria-label={isPlayingExact ? 'Stop reading exact text' : 'Read exact verbatim text aloud'}
             >
-              <Volume2 className="h-7 w-7 stroke-[2.8]" />
+              <Volume2 className="h-6 w-6 sm:h-7 sm:w-7 stroke-[2.8]" />
               <span>{isPlayingExact ? 'Pause Reading Exact Text' : 'Read Exact Text Aloud'}</span>
             </button>
 
@@ -442,7 +442,7 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
                 )}
               </div>
 
-              <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-base sm:text-lg text-zinc-100 font-mono whitespace-pre-wrap leading-relaxed select-text">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-sm sm:text-lg text-zinc-100 font-mono whitespace-pre-wrap leading-relaxed select-text">
                 {currentResult.fullText || 'No verbatim text captured.'}
               </div>
             </div>
@@ -452,11 +452,11 @@ export const ReadTextView: React.FC<ReadTextViewProps> = ({ onBack }) => {
 
       {/* When no text has been read yet */}
       {!currentResult && (
-        <div className="p-6 rounded-3xl bg-zinc-950 border-2 border-zinc-800 text-center space-y-2">
-          <p className="text-xl font-extrabold text-white">
+        <div className="p-4 sm:p-6 rounded-3xl bg-zinc-950 border-2 border-zinc-800 text-center space-y-2">
+          <p className="text-lg sm:text-xl font-extrabold text-white">
             Point camera at package and tap "Read Text Now"
           </p>
-          <p className="text-sm font-semibold text-zinc-400">
+          <p className="text-xs sm:text-sm font-semibold text-zinc-400">
             Aperture will first speak an overview summary aloud, then give you a button to hear the exact text word-for-word.
           </p>
         </div>

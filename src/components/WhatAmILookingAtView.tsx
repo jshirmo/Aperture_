@@ -213,27 +213,27 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl px-4 py-4 space-y-4">
+    <div className="mx-auto w-full max-w-2xl px-3 sm:px-4 py-3 sm:py-4 space-y-3 sm:space-y-4">
       {/* Top Header */}
       <div className="flex items-center justify-between pb-3 border-b-2 border-zinc-800">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button
             onClick={() => {
               haptic.tapFeedback();
               speech.stop();
               onBack();
             }}
-            className="flex min-h-[50px] min-w-[50px] items-center justify-center rounded-2xl bg-zinc-900 border-2 border-zinc-700 text-white hover:bg-zinc-800 focus-visible:ring-4 focus-visible:ring-emerald-400"
+            className="flex min-h-[46px] min-w-[46px] sm:min-h-[50px] sm:min-w-[50px] items-center justify-center rounded-2xl bg-zinc-900 border-2 border-zinc-700 text-white hover:bg-zinc-800 focus-visible:ring-4 focus-visible:ring-emerald-400 shrink-0"
             aria-label="Back to home dashboard"
           >
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
-          <div>
-            <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-              <Eye className="h-7 w-7 text-emerald-400" />
-              What Am I Looking At?
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-1.5 sm:gap-2 truncate">
+              <Eye className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-400 shrink-0" />
+              <span>What Am I Looking At?</span>
             </h1>
-            <p className="text-xs text-emerald-300 font-bold tracking-wide">
+            <p className="text-[11px] sm:text-xs text-emerald-300 font-bold tracking-wide truncate">
               AI Scene &amp; Obstacle Inspector
             </p>
           </div>
@@ -261,18 +261,18 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
 
         {/* Live scanning pulse indicator */}
         {isInspecting && (
-          <div className="absolute inset-0 bg-emerald-400/10 border-4 border-emerald-400 flex items-center justify-center pointer-events-none">
-            <div className="bg-black/85 px-4 py-2 rounded-2xl border border-emerald-400 flex items-center gap-2 text-emerald-300 text-xs font-black">
-              <RefreshCw className="w-4 h-4 animate-spin" />
+          <div className="absolute inset-0 bg-emerald-400/10 border-4 border-emerald-400 flex items-center justify-center pointer-events-none px-4">
+            <div className="bg-black/85 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-emerald-400 flex items-center gap-2 text-emerald-300 text-[11px] sm:text-xs font-black">
+              <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
               <span>Analyzing field of view with AI...</span>
             </div>
           </div>
         )}
 
         {/* Active mode indicator overlay */}
-        <div className="absolute bottom-3 left-3 bg-black/85 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-zinc-700 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-emerald-400" />
-          <span className="text-xs font-black text-white">
+        <div className="absolute bottom-3 left-3 bg-black/85 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-xl border border-zinc-700 flex items-center gap-1.5 sm:gap-2">
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
+          <span className="text-[11px] sm:text-xs font-black text-white">
             {activeMode === 'scene' && 'General Scene Layout'}
             {activeMode === 'text' && 'Reading Text in View'}
             {activeMode === 'hazards' && 'Obstacle & Trip Hazard Scan'}
@@ -284,11 +284,11 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
       <button
         onClick={() => performInspection(activeMode)}
         disabled={isInspecting}
-        className="w-full min-h-[64px] rounded-2xl bg-emerald-400 p-4 font-black text-zinc-950 hover:bg-emerald-300 active:scale-[0.99] transition-all flex items-center justify-center gap-3 shadow-xl focus-visible:ring-4 focus-visible:ring-emerald-300 disabled:opacity-50"
+        className="w-full min-h-[58px] sm:min-h-[64px] rounded-2xl bg-emerald-400 p-3 sm:p-4 font-black text-zinc-950 hover:bg-emerald-300 active:scale-[0.99] transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-xl focus-visible:ring-4 focus-visible:ring-emerald-300 disabled:opacity-50"
         aria-label={`Inspect ${activeMode} now with AI`}
       >
-        <RefreshCw className={`w-6 h-6 ${isInspecting ? 'animate-spin' : ''}`} />
-        <span className="text-lg uppercase tracking-wide">
+        <RefreshCw className={`w-5 h-5 sm:w-6 sm:h-6 ${isInspecting ? 'animate-spin' : ''}`} />
+        <span className="text-base sm:text-lg uppercase tracking-wide">
           {isInspecting
             ? 'Analyzing Scene...'
             : activeMode === 'scene'
@@ -305,11 +305,11 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
           Select View Mode:
         </p>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
           {/* 1. Scene Layout */}
           <button
             onClick={() => handleModeChange('scene')}
-            className={`min-h-[72px] p-4 rounded-2xl border-3 flex items-center gap-3 text-left transition-all ${
+            className={`min-h-[64px] sm:min-h-[72px] p-3 sm:p-4 rounded-2xl border-3 flex items-center gap-2 sm:gap-3 text-left transition-all ${
               activeMode === 'scene'
                 ? 'bg-yellow-400 border-yellow-300 text-zinc-950 font-black shadow-xl scale-[1.01]'
                 : 'bg-zinc-900 border-zinc-700 text-white hover:border-zinc-500'
@@ -317,11 +317,11 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
             aria-label="Scene Layout mode. Describe room landmarks and furniture."
             aria-pressed={activeMode === 'scene'}
           >
-            <Eye className="w-8 h-8 shrink-0 stroke-[2.5]" />
-            <div>
-              <p className="text-base font-black leading-tight">Scene Layout</p>
-              <p className={`text-xs ${activeMode === 'scene' ? 'text-zinc-900 font-bold' : 'text-zinc-300'}`}>
-                Furniture &amp; landmarks
+            <Eye className="w-6 h-6 sm:w-8 sm:h-8 shrink-0 stroke-[2.5]" />
+            <div className="min-w-0">
+              <p className="text-sm sm:text-base font-black leading-tight truncate">Scene Layout</p>
+              <p className={`text-[11px] sm:text-xs truncate ${activeMode === 'scene' ? 'text-zinc-900 font-bold' : 'text-zinc-300'}`}>
+                Landmarks
               </p>
             </div>
           </button>
@@ -329,7 +329,7 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
           {/* 2. Hazards & Safety */}
           <button
             onClick={() => handleModeChange('hazards')}
-            className={`min-h-[72px] p-4 rounded-2xl border-3 flex items-center gap-3 text-left transition-all ${
+            className={`min-h-[64px] sm:min-h-[72px] p-3 sm:p-4 rounded-2xl border-3 flex items-center gap-2 sm:gap-3 text-left transition-all ${
               activeMode === 'hazards'
                 ? 'bg-rose-500 border-rose-400 text-white font-black shadow-xl scale-[1.01]'
                 : 'bg-zinc-900 border-zinc-700 text-white hover:border-zinc-500'
@@ -337,11 +337,11 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
             aria-label="Safety and Hazards mode. Detect floor trip obstacles."
             aria-pressed={activeMode === 'hazards'}
           >
-            <ShieldAlert className="w-8 h-8 shrink-0 stroke-[2.5]" />
-            <div>
-              <p className="text-base font-black leading-tight">Safety &amp; Hazards</p>
-              <p className={`text-xs ${activeMode === 'hazards' ? 'text-white font-bold' : 'text-zinc-300'}`}>
-                Walkway &amp; trip alerts
+            <ShieldAlert className="w-6 h-6 sm:w-8 sm:h-8 shrink-0 stroke-[2.5]" />
+            <div className="min-w-0">
+              <p className="text-sm sm:text-base font-black leading-tight truncate">Safety &amp; Hazards</p>
+              <p className={`text-[11px] sm:text-xs truncate ${activeMode === 'hazards' ? 'text-white font-bold' : 'text-zinc-300'}`}>
+                Trip alerts
               </p>
             </div>
           </button>
@@ -353,7 +353,7 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
         role="region"
         aria-live="assertive"
         aria-atomic="true"
-        className={`p-5 rounded-3xl border-3 ${
+        className={`p-4 sm:p-5 rounded-3xl border-3 ${
           result?.hazards && result.hazards.length > 0
             ? 'bg-rose-950/60 border-rose-500 text-rose-100'
             : 'bg-zinc-950 border-emerald-400/90 text-white'
@@ -361,22 +361,22 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Volume2 className="w-6 h-6 text-emerald-400" />
-            <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
+            <Volume2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
+            <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-emerald-400">
               Spoken AI Description
             </span>
           </div>
 
           <button
             onClick={handleRepeatGuidance}
-            className="text-xs font-bold px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white hover:bg-zinc-800"
+            className="text-xs font-bold px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white hover:bg-zinc-800"
             aria-label="Replay audio announcement"
           >
             Replay Audio
           </button>
         </div>
 
-        <p className="text-lg sm:text-xl font-extrabold text-white leading-relaxed">
+        <p className="text-base sm:text-xl font-extrabold text-white leading-relaxed">
           {result?.spokenGuidance ||
             (isInspecting
               ? 'Inspecting scene with AI...'
@@ -385,12 +385,12 @@ export const WhatAmILookingAtView: React.FC<WhatAmILookingAtViewProps> = ({
 
         {/* Hazards alert */}
         {result?.hazards && result.hazards.length > 0 && (
-          <div className="mt-3 p-3.5 bg-rose-900/60 rounded-2xl border-2 border-rose-400">
+          <div className="mt-3 p-3 sm:p-3.5 bg-rose-900/60 rounded-2xl border-2 border-rose-400">
             <p className="text-xs font-black uppercase text-rose-200 mb-1 flex items-center gap-1.5">
-              <AlertTriangle className="w-5 h-5 text-rose-300" />
+              <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-300" />
               <span>Safety Obstacle Notice:</span>
             </p>
-            <ul className="text-sm text-white space-y-1 list-disc list-inside font-bold">
+            <ul className="text-xs sm:text-sm text-white space-y-1 list-disc list-inside font-bold">
               {result.hazards.map((h, idx) => (
                 <li key={idx}>{h}</li>
               ))}

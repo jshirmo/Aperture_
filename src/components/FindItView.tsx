@@ -481,29 +481,29 @@ export const FindItView: React.FC<FindItViewProps> = ({
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl px-4 py-4 space-y-4">
+    <div className="mx-auto w-full max-w-2xl px-3 sm:px-4 py-3 sm:py-4 space-y-3 sm:space-y-4">
       {/* Top Header Row with Navigation and Calibration Toggle */}
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-2 sm:gap-3">
         <button
           onClick={() => {
             haptic.tapFeedback();
             onBack();
           }}
-          className="flex min-h-[48px] items-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-2 font-bold text-zinc-200 hover:bg-zinc-800 hover:text-white focus-visible:ring-2 focus-visible:ring-yellow-400"
+          className="flex min-h-[44px] sm:min-h-[48px] items-center gap-1.5 sm:gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 px-3 sm:px-4 py-2 font-bold text-zinc-200 hover:bg-zinc-800 hover:text-white focus-visible:ring-2 focus-visible:ring-yellow-400"
           aria-label="Back to home screen"
         >
           <ArrowLeft className="h-5 w-5" />
           <span>Back</span>
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           {/* Calibration Panel Toggle */}
           <button
             onClick={() => {
               haptic.tapFeedback();
               setShowCalibrationPanel(!showCalibrationPanel);
             }}
-            className={`flex min-h-[48px] min-w-[48px] items-center justify-center rounded-2xl border transition-all ${
+            className={`flex min-h-[44px] min-w-[44px] sm:min-h-[48px] sm:min-w-[48px] items-center justify-center rounded-2xl border transition-all shrink-0 ${
               showCalibrationPanel
                 ? 'border-yellow-400 bg-yellow-400 text-zinc-950 font-black'
                 : 'border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white'
@@ -514,9 +514,9 @@ export const FindItView: React.FC<FindItViewProps> = ({
             <Sliders className="h-5 w-5" />
           </button>
 
-          <div className="text-right pl-1">
+          <div className="text-right pl-1 min-w-0">
             <p className="text-[10px] uppercase font-extrabold tracking-wider text-yellow-400">Seeking</p>
-            <p className="text-base font-black text-white capitalize leading-tight max-w-[130px] truncate">{target || 'None'}</p>
+            <p className="text-sm sm:text-base font-black text-white capitalize leading-tight max-w-[100px] sm:max-w-[160px] truncate">{target || 'None'}</p>
           </div>
         </div>
       </div>
@@ -742,15 +742,15 @@ export const FindItView: React.FC<FindItViewProps> = ({
             type="text"
             value={customInput}
             onChange={(e) => setCustomInput(e.target.value)}
-            placeholder="Type item to find (e.g. keys, water bottle, door)"
-            className="w-full min-h-[58px] rounded-2xl border-3 border-yellow-400 bg-zinc-950 px-4 pr-12 text-base sm:text-lg font-bold text-white placeholder-zinc-500 shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400"
+            placeholder="Type item to find (e.g. keys, bottle, door)"
+            className="w-full min-h-[52px] sm:min-h-[58px] rounded-2xl border-3 border-yellow-400 bg-zinc-950 px-3.5 sm:px-4 pr-10 sm:pr-12 text-sm sm:text-lg font-bold text-white placeholder-zinc-500 shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400"
             aria-label="Type what you want to find"
           />
           {customInput && (
             <button
               type="button"
               onClick={handleClearTarget}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-zinc-400 hover:text-white"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 text-zinc-400 hover:text-white"
               aria-label="Clear target input"
             >
               <X className="w-5 h-5" />
@@ -761,7 +761,7 @@ export const FindItView: React.FC<FindItViewProps> = ({
         <button
           type="submit"
           disabled={!customInput.trim()}
-          className="min-h-[58px] rounded-2xl bg-yellow-400 px-6 font-black text-zinc-950 text-base sm:text-lg hover:bg-yellow-300 active:scale-95 transition-all shadow-xl disabled:opacity-40"
+          className="min-h-[52px] sm:min-h-[58px] rounded-2xl bg-yellow-400 px-4 sm:px-6 font-black text-zinc-950 text-sm sm:text-lg hover:bg-yellow-300 active:scale-95 transition-all shadow-xl disabled:opacity-40 shrink-0"
           aria-label="Search for this item"
         >
           Find
@@ -863,7 +863,7 @@ export const FindItView: React.FC<FindItViewProps> = ({
       <section
         role="region"
         aria-labelledby="guidance-hud-title"
-        className={`rounded-3xl border-2 p-5 shadow-2xl transition-all ${
+        className={`rounded-3xl border-2 p-4 sm:p-5 shadow-2xl transition-all ${
           guidance?.isImmediateObstacle
             ? 'border-red-500 bg-red-950/40 text-red-100'
             : isCentered
@@ -871,25 +871,25 @@ export const FindItView: React.FC<FindItViewProps> = ({
             : 'border-zinc-800 bg-zinc-900 text-white'
         }`}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
           {/* Main Direction Text & Spoken Instruction */}
-          <div className="space-y-2 flex-1">
+          <div className="space-y-1.5 sm:space-y-2 flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-extrabold uppercase tracking-widest text-zinc-400">
+              <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-widest text-zinc-400">
                 Directional Bearing
               </span>
               {isCentered && (
-                <span className="rounded-md bg-yellow-400 px-2 py-0.5 text-[11px] font-black uppercase text-zinc-950">
+                <span className="rounded-md bg-yellow-400 px-2 py-0.5 text-[10px] sm:text-[11px] font-black uppercase text-zinc-950">
                   CENTERED ALIGNED
                 </span>
               )}
             </div>
 
-            <h2 id="guidance-hud-title" className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+            <h2 id="guidance-hud-title" className="text-2xl sm:text-4xl font-black tracking-tight text-white">
               {clockHourText}
             </h2>
 
-            <p className="text-lg sm:text-xl font-bold text-yellow-300 leading-snug">
+            <p className="text-base sm:text-xl font-bold text-yellow-300 leading-snug">
               {guidance?.actionInstruction ||
                 (target
                   ? `Point camera slowly to find ${target}...`
@@ -905,9 +905,9 @@ export const FindItView: React.FC<FindItViewProps> = ({
           <div className="flex flex-col items-center justify-center shrink-0 self-center">
             <svg
               viewBox="0 0 120 120"
-              width="120"
-              height="120"
-              className="drop-shadow-lg"
+              width="105"
+              height="105"
+              className="sm:w-[120px] sm:h-[120px] drop-shadow-lg"
               aria-label={`Calibrated clock face pointer oriented at ${Math.round(angleDeg)} degrees (${clockHourText})`}
             >
               {/* Outer dial ring */}
@@ -991,15 +991,15 @@ export const FindItView: React.FC<FindItViewProps> = ({
             <div>
               {distanceInfo.hasTarget ? (
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-white tracking-tight">
+                  <span className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                     {distanceUnit === 'ft' ? `${distanceInfo.feet} ft` : `${distanceInfo.meters} m`}
                   </span>
-                  <span className="text-sm font-semibold text-zinc-400">
+                  <span className="text-xs sm:text-sm font-semibold text-zinc-400">
                     ({distanceUnit === 'ft' ? `${distanceInfo.meters} m` : `${distanceInfo.feet} ft`})
                   </span>
                 </div>
               ) : (
-                <div className="text-2xl font-black text-zinc-400">
+                <div className="text-xl sm:text-2xl font-black text-zinc-400">
                   {target ? `-- ${distanceUnit} (Searching...)` : 'No item chosen'}
                 </div>
               )}
@@ -1056,24 +1056,24 @@ export const FindItView: React.FC<FindItViewProps> = ({
       </section>
 
       {/* Action Buttons: Hear Again & Scan Now */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
         <button
           onClick={repeatGuidance}
-          className="flex min-h-[58px] items-center justify-center gap-2 rounded-2xl border-2 border-yellow-400 bg-zinc-900 px-4 py-3 font-bold text-white hover:bg-zinc-800 active:scale-98 transition-all focus-visible:ring-2 focus-visible:ring-yellow-400"
+          className="flex min-h-[52px] sm:min-h-[58px] items-center justify-center gap-1.5 sm:gap-2 rounded-2xl border-2 border-yellow-400 bg-zinc-900 px-3 sm:px-4 py-2.5 sm:py-3 font-bold text-white hover:bg-zinc-800 active:scale-98 transition-all focus-visible:ring-2 focus-visible:ring-yellow-400"
           aria-label="Hear guidance again"
         >
-          <Volume2 className="h-6 w-6 text-yellow-400" />
-          <span className="text-base font-extrabold">Hear Again</span>
+          <Volume2 className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-400" />
+          <span className="text-sm sm:text-base font-extrabold">Hear Again</span>
         </button>
 
         <button
           onClick={() => performScan(true)}
           disabled={isScanning}
-          className="flex min-h-[58px] items-center justify-center gap-2 rounded-2xl bg-yellow-400 px-4 py-3 font-extrabold text-zinc-950 hover:bg-yellow-300 active:scale-98 transition-all disabled:opacity-50 shadow-lg"
+          className="flex min-h-[52px] sm:min-h-[58px] items-center justify-center gap-1.5 sm:gap-2 rounded-2xl bg-yellow-400 px-3 sm:px-4 py-2.5 sm:py-3 font-extrabold text-zinc-950 hover:bg-yellow-300 active:scale-98 transition-all disabled:opacity-50 shadow-lg"
           aria-label="Scan camera view now"
         >
-          <RefreshCw className={`h-6 w-6 ${isScanning ? 'animate-spin' : ''}`} />
-          <span className="text-base">Scan Now</span>
+          <RefreshCw className={`h-5 w-5 sm:h-6 sm:w-6 ${isScanning ? 'animate-spin' : ''}`} />
+          <span className="text-sm sm:text-base">Scan Now</span>
         </button>
       </div>
 

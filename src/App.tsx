@@ -63,7 +63,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col transition-colors ${
+      className={`min-h-screen flex flex-col w-full overflow-x-hidden transition-colors ${
         isLight ? 'bg-zinc-100 text-zinc-950' : 'bg-black text-white'
       }`}
     >
@@ -89,7 +89,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main id="main-content" tabIndex={-1} className="flex-1 pb-24 outline-none">
+      <main id="main-content" tabIndex={-1} className="flex-1 pb-32 sm:pb-24 outline-none">
         {currentView === 'home' && (
           <HomeDashboard
             onSelectView={handleSelectView}
@@ -150,7 +150,7 @@ export default function App() {
             aria-current={currentView === 'home' ? 'page' : undefined}
           >
             <HomeIcon className="h-5 w-5" />
-            <span className="text-[10px] tracking-tight mt-1 font-bold">Home</span>
+            <span className="text-[10px] sm:text-xs tracking-tight mt-0.5 font-bold truncate max-w-full text-center">Home</span>
           </button>
 
           {/* 2. Read Text & Labels Tab */}
@@ -168,7 +168,7 @@ export default function App() {
             aria-current={currentView === 'read' ? 'page' : undefined}
           >
             <FileText className="h-5 w-5" />
-            <span className="text-[10px] tracking-tight mt-1 font-bold">Read</span>
+            <span className="text-[10px] sm:text-xs tracking-tight mt-0.5 font-bold truncate max-w-full text-center">Read</span>
           </button>
 
           {/* 3. Find It Tab */}
@@ -186,7 +186,7 @@ export default function App() {
             aria-current={currentView === 'find' ? 'page' : undefined}
           >
             <Compass className="h-5 w-5" />
-            <span className="text-[10px] tracking-tight mt-1 font-bold">Find</span>
+            <span className="text-[10px] sm:text-xs tracking-tight mt-0.5 font-bold truncate max-w-full text-center">Find</span>
           </button>
 
           {/* 4. What Am I Looking At? Tab */}
@@ -204,7 +204,7 @@ export default function App() {
             aria-current={currentView === 'inspect' ? 'page' : undefined}
           >
             <Eye className="h-5 w-5" />
-            <span className="text-[10px] tracking-tight mt-1 font-bold">Looking At</span>
+            <span className="text-[10px] sm:text-xs tracking-tight mt-0.5 font-bold truncate max-w-full text-center">Looking At</span>
           </button>
         </div>
       </nav>

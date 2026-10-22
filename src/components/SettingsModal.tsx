@@ -59,9 +59,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-4 backdrop-blur-sm overflow-y-auto"
     >
-      <div className="w-full max-w-lg rounded-3xl border-2 border-yellow-400 bg-zinc-950 p-6 text-white shadow-2xl space-y-6 my-8 max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-lg rounded-3xl border-2 border-yellow-400 bg-zinc-950 p-4 sm:p-6 text-white shadow-2xl space-y-4 sm:space-y-6 my-auto max-h-[92vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
           <h2 id="settings-title" className="text-xl font-black text-white">
