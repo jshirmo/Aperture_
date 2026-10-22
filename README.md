@@ -1,4 +1,4 @@
-# Aura: AI Visual Environment Companion
+# Aperture: AI Visual Environment Companion
 
 > **An accessibility-first physical environment companion for blind and low-vision users.**  
 > Focused on **action and directional independence** rather than generic image descriptions.
@@ -17,7 +17,7 @@
 Most visual accessibility tools today generate generic, passive narrations:
 > ❌ *“I see a kitchen with a table, cabinets, and a refrigerator.”*
 
-**Aura focuses on actionable, spatial guidance:**
+**Aperture focuses on actionable, spatial guidance:**
 > ✅ *“Your water bottle is on the table, at 11 o’clock, approximately 3 feet ahead.”*  
 > ✅ *“Empty chair at 2 o’clock, 7 feet away. Move slightly right.”*
 
@@ -77,7 +77,7 @@ An interactive in-app guide showcases five architected future modes:
 ## 🛡️ Privacy & Safety Disclaimers
 
 - **Privacy**: Live camera video frames are analyzed in-memory via server-side proxies and are **never permanently stored** on remote servers. Only explicitly saved items and baselines reside in local browser storage, with a 1-tap "Purge All Data" option.
-- **Mobility Notice**: Aura assists visual awareness and orientation but does **not** replace a white cane, guide dog, or orientation and mobility training. Confidence thresholds explicitly flag uncertain detections.
+- **Mobility Notice**: Aperture assists visual awareness and orientation but does **not** replace a white cane, guide dog, or orientation and mobility training. Confidence thresholds explicitly flag uncertain detections.
 
 ---
 
@@ -95,7 +95,7 @@ An interactive in-app guide showcases five architected future modes:
 1. **Clone the repository:**
    ```bash
    git clone <your-repo-url>
-   cd aura
+   cd Aperture_
    ```
 
 2. **Install dependencies:**
