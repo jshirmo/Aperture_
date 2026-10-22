@@ -6,7 +6,6 @@ import { ReadTextView } from './components/ReadTextView';
 import { WhatAmILookingAtView } from './components/WhatAmILookingAtView';
 import { FutureModesModal } from './components/FutureModesModal';
 import { SettingsModal } from './components/SettingsModal';
-import { OnboardingModal } from './components/OnboardingModal';
 import { UserSettings, SavedItem, FeedbackMethod, AppView } from './types';
 import { storageService } from './services/storageService';
 import { speech } from './services/speechService';
@@ -22,7 +21,6 @@ export default function App() {
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
-  const [isOnboardingOpen, setIsOnboardingOpen] = useState(!settings.hasCompletedOnboarding);
 
   // Sync settings with speech service and document root classes
   useEffect(() => {
@@ -59,14 +57,6 @@ export default function App() {
       speech.speak(viewNames[view], 'immediate');
     }
     setCurrentView(view);
-  };
-
-  const completeOnboarding = (preferredFeedback: FeedbackMethod) => {
-    updateSettings({
-      feedbackMethod: preferredFeedback,
-      hasCompletedOnboarding: true,
-    });
-    setIsOnboardingOpen(false);
   };
 
   const isLight = settings.theme === 'high-contrast-light';
@@ -230,11 +220,6 @@ export default function App() {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onUpdateSettings={updateSettings}
-      />
-
-      <OnboardingModal
-        isOpen={isOnboardingOpen}
-        onComplete={completeOnboarding}
       />
     </div>
   );

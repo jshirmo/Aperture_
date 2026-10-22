@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   autoContinuousGuidance: true,
   hapticIntensity: 'high',
   soundEffects: true,
-  hasCompletedOnboarding: false,
+  hasCompletedOnboarding: true,
 };
 
 const INITIAL_ITEMS: SavedItem[] = [

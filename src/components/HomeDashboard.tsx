@@ -41,7 +41,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
               AI Vision Tools
             </h1>
             <p className="text-sm font-semibold text-zinc-200">
-              High-contrast visual tools built for blind and low-vision independence. Choose a tool below or navigate hands-free.
+              High-contrast visual tools built for blind and low-vision independence. Choose a tool below.
             </p>
           </div>
           <img
@@ -121,7 +121,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
             onSelectView('inspect');
           }}
           className="group w-full min-h-[124px] rounded-3xl border-3 border-emerald-400 bg-gradient-to-r from-zinc-950 via-zinc-900 to-black p-5 text-left transition-all hover:bg-zinc-900 hover:border-emerald-300 active:scale-[0.99] focus-visible:ring-4 focus-visible:ring-emerald-400 shadow-xl"
-          aria-label="What Am I Looking At: Live hands-free scene descriptor, room layouts, walkway clear paths, and trip hazards."
+          aria-label="What Am I Looking At: Scene descriptor, room layouts, walkway clear paths, and trip hazards."
         >
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-emerald-400 text-zinc-950 font-black shadow-md group-hover:scale-105 transition-transform">
@@ -135,7 +135,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                 <ArrowRight className="h-6 w-6 text-emerald-400 opacity-90 group-hover:translate-x-1 transition-transform" />
               </div>
               <p className="text-sm font-semibold text-zinc-200 leading-snug">
-                Live scene descriptor, room layouts, walkway clear paths, and trip hazard alerts.
+                Scene descriptor, room layouts, walkway clear paths, and trip hazard alerts.
               </p>
             </div>
           </div>
