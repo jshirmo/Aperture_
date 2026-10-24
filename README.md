@@ -100,7 +100,7 @@ Then open [http://localhost:3000](http://localhost:3000).
 ```bash
 npm run build
 NODE_ENV=production npm start
-``>
+```
 
 ## Project context
 
